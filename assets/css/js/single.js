@@ -1,4 +1,24 @@
 var issueContainerEl = document.querySelector("#issues-container");
+var repoNameEl = document.querySelector("#repo-name");
+
+var getRepoName = function() {
+  //use location object and split method to extract repo name from the query string
+  var queryString = document.location.search;
+  var repoName = queryString.split("=")[1];
+  
+  
+  if(repoName) {
+    //display repo name on the page
+    repoNameEl.textContent = repoName;
+    //and call the function to display the issues
+    getRepoIssues(repoName);
+  } else {
+    //if not repo name was given, redirect to the homepage
+    document.location.replace("./index.html");
+  }
+};
+
+
 
 var getRepoIssues = function (repo) {
   var apiUrl = "https://api.github.com/repos/" + repo + "/issues?direction=asc";
@@ -20,7 +40,6 @@ var getRepoIssues = function (repo) {
   });
 };
 
-getRepoIssues("facebook/react");
 
 var displayIssues = function (issues) {
   if (issues.length === 0) {
@@ -55,3 +74,9 @@ var displayIssues = function (issues) {
     issueContainerEl.appendChild(issueEl);
   }
 };
+
+
+
+
+//new function call
+getRepoName();
